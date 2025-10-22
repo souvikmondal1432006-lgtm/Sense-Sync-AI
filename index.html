@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SenseSync — Guiding Your Journey</title>
+  <style>
+    :root{
+      --bg:#071019; --card:#0b1220; --muted:#9aa4b2; --accent:#00b894; --text:#e6eef3;
+      --radius:12px; --container:1100px; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    }
+    *{box-sizing:border-box}
+    body {
+      margin: 0;
+      background: url("image-background.png") no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--container);margin:0 auto;padding:28px}
+
+    /* HEADER */
+    header{position:sticky;top:0;background:rgba(4,10,14,0.6);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03);z-index:1000}
+    .header-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{height:44px;width:44px;border-radius:8px}
+    nav{display:flex;align-items:center;gap:8px}
+    nav a, nav button{color:var(--text);margin-left:10px;background:transparent;border:none;cursor:pointer;padding:8px 10px;border-radius:8px;font-size:0.95rem}
+    .cta{background:linear-gradient(90deg,var(--accent),#00e6b8); color:#042; font-weight:700}
+
+    /* HERO */
+    .hero{padding:72px 0 40px}
+    .hero h1{font-size:2.2rem;margin:0 0 12px}
+    .hero p{color:var(--muted);max-width:820px;line-height:1.5}
+    .actions{margin-top:18px}
+
+    /* SECTIONS */
+    section{Padding:36px 0}
+    section.alt{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
+    h2{margin:0 0 12px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .card{background:var(--card);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+
+    /* AUTH MODAL */
+    .modal{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;padding:20px}
+    .modal.open{display:flex}
+    .modal-card{width:420px;max-width:94%;background:#08121a;padding:22px;border-radius:14px;box-shadow:0 16px 50px rgba(0,0,0,0.6);position:relative;border:1px solid rgba(255,255,255,0.03)}
+    .modal-card h3{margin:0 0 12px}
+    .close-x{position:absolute;right:12px;top:10px;border:none;background:transparent;color:var(--muted);font-size:20px;cursor:pointer}
+    .form-row{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+    .form-row input{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text);outline:none}
+    .row{display:flex;gap:10px}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);cursor:pointer;background:transparent;color:var(--text)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#00e6b8);color:#042;border:none}
+    .divider{display:flex;align-items:center;gap:8px;margin:14px 0;color:var(--muted)}
+    .divider::before,.divider::after{content:"";flex:1;height:1px;background:rgba(255,255,255,0.03)}
+    .social-btn{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);cursor:pointer;background:transparent;color:var(--text)}
+    .social-btn.google{background:#fff;color:#000}
+    .social-btn.phone{background:#2fa360;color:#fff;border:none}
+    .muted{color:var(--muted);font-size:0.9rem}
+    #authMessage{font-size:0.9rem; margin-top:6px}
+    #recaptcha-container{display:block;height:1px;width:1px;overflow:hidden;opacity:0}
+
+    @media (max-width:720px){
+      nav a{display:none}
+      .modal-card{width:94%}
+      .hero h1{font-size:1.6rem}
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="container header-row">
+      <div class="brand">
+        <img src="logo.png" alt="SenseSync Logo" onerror="this.style.display='none'"/>
+        <div>
+          <div style="font-weight:700">SenseSync</div>
+          <div style="font-size:0.85rem;color:var(--muted)">Guiding Your Journey</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <a href="#howitworks">How It Works</a>
+        <a href="#faq">FAQ</a>
+        <a href="#team">Team</a>
+        <a href="#contact">Contact</a>
+        <button id="userBtn" class="cta">Login</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <h1>Inclusive Communication for Everyone</h1>
+      <p>SenseSync uses AI to bridge vision, hearing, and speech differences — helping people connect effortlessly.</p>
+      <div class="actions">
+        <button class="btn primary" id="getStartedBtn">Get Started</button>
+        <a class="btn" href="#contact">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <h2>About SenseSync</h2>
+      <p>SenseSync is an AI accessibility platform designed for individuals with visual, hearing, or speech impairments.</p>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="alt">
+    <div class="container">
+      <h2>Key Features</h2>
+      <div class="grid">
+        <div class="card"><h3>Live Narration</h3><p>Objects, text, and scenes described in real time.</p></div>
+        <div class="card"><h3>Instant Captions</h3><p>Speech-to-text captions and sign avatars.</p></div>
+        <div class="card"><h3>Voice Generation</h3><p>Natural voices generated from text or gestures.</p></div>
+        <div class="card"><h3>Cross-Sensory Bridge</h3><p>Connects people across different sensory needs.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="howitworks">
+    <div class="container">
+      <h2>How It Works</h2>
+      <ol>
+        <li><strong>Capture:</strong> Camera & microphone capture input.</li>
+        <li><strong>Understand:</strong> AI models process speech, vision, gestures.</li>
+        <li><strong>Translate:</strong> Content converted into captions, narration, or voices.</li>
+        <li><strong>Deliver:</strong> Tailored output shared in real time.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="alt">
+    <div class="container">
+      <h2>FAQ</h2>
+      <details><summary>Who can benefit?</summary><p>Individuals with sensory differences, and organizations promoting inclusion.</p></details>
+      <details><summary>How do I try it?</summary><p>Click "Get Started" to sign up or request a demo.</p></details>
+      <details><summary>What devices are supported?</summary><p>SenseSync works on modern smartphones, tablets, and browsers.</p></details>
+      <details><summary>Is SenseSync free to use?</summary><p>Core accessibility features are free. Premium plans for enterprises are available.</p></details>
+      <details><summary>Can organizations integrate SenseSync?</summary><p>Yes, we offer API and SDK support for businesses and institutions.</p></details>
+      <details><summary>How is user data handled?</summary><p>We prioritize privacy and comply with data protection standards (GDPR, HIPAA where applicable).</p></details>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section id="team">
+    <div class="container">
+      <h2>Team</h2>
+      <div class="grid">
+        <div class="card"><strong>Souvik Mondal</strong><div class="muted">Lead — Vision</div></div>
+        <div class="card"><strong>Binayak Mondal</strong><div class="muted">Backend & Integration</div></div>
+        <div class="card"><strong>Gautham Krishna U</strong><div class="muted">Speech & TTS</div></div>
+        <div class="card"><strong>Subhanil Mitra</strong><div class="muted">Product & UX</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="alt">
+    <div class="container" style="display:flex;flex-wrap:wrap;gap:30px;align-items:flex-start">
+      <form id="contactForm" style="flex:1 1 400px;display:grid;gap:14px;background:var(--card);padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.25)">
+        <h2>Contact Us</h2>
+        <input name="name" placeholder="Your name" required />
+        <input name="email" placeholder="Your email" type="email" required />
+        <textarea name="message" rows="4" placeholder="Message" required></textarea>
+        <button class="btn primary" type="submit">Send Message</button>
+        <div id="contactMessage" class="muted"></div>
+      </form>
+      <div style="flex:1 1 300px;padding:20px">
+        <h2>Get in Touch</h2>
+        <p class="muted">We’d love to hear from you! Reach out with questions, feedback, or partnership opportunities.</p>
+        <ul style="list-style:none;padding:0;margin-top:14px;line-height:1.8">
+          <li><strong>Email:</strong> support@sensesync.com</li>
+          <li><strong>Phone:</strong> +91 89184 72556</li>
+          <li><strong>Location:</strong> Chennai, India</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTH MODAL -->
+  <div id="authModal" class="modal">
+    <div class="modal-card">
+      <button class="close-x" id="closeAuth">✕</button>
+      <h3>Sign in / Sign up</h3>
+
+      <div class="form-row">
+        <input id="emailInput" type="email" placeholder="Email" />
+        <input id="passwordInput" type="password" placeholder="Password" />
+        <div id="authMessage" class="muted"></div>
+        <div class="row">
+          <button id="emailLoginBtn" class="btn primary" style="flex:1">Login</button>
+          <button id="emailSignUpBtn" class="btn" style="flex:1">Sign up</button>
+        </div>
+        <button id="resetPasswordBtn" class="btn" style="margin-top:6px">Forgot password?</button>
+      </div>
+
+      <div class="divider"><span>OR</span></div>
+
+      <button id="googleLogin" class="social-btn google">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" />
+        <span>Sign in with Google</span>
+      </button>
+
+      <div class="muted" style="margin-top:12px">By signing up, you agree to our Terms.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="padding:20px 0">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center">
+      <div>Built by Caffeinated Coders ☕ · &copy; <span id="year"></span></div>
+      <div class="muted">SenseSync</div>
+    </div>
+  </footer>
+
+  <!-- FIREBASE + SCRIPT -->
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+  import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    sendPasswordResetEmail, 
+    GoogleAuthProvider, 
+    signInWithPopup 
+  } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+
+  // 🔹 Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyAA7IdiY_fg8yZpvy_pKgTI7LIjEkelN6U",
+    authDomain: "sense-sync-c615a.firebaseapp.com",
+    projectId: "sense-sync-c615a",
+    storageBucket: "sense-sync-c615a.appspot.com",
+    messagingSenderId: "179674607290",
+    appId: "1:179674607290:web:27da9858c241babb1fdc83"
+};
+
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Modal
+  const userBtn = document.getElementById("userBtn");
+  const authModal = document.getElementById("authModal");
+  const closeAuth = document.getElementById("closeAuth");
+
+  userBtn.addEventListener("click", () => authModal.style.display = "flex");
+  closeAuth.addEventListener("click", () => authModal.style.display = "none");
+
+  // Auth Elements
+  const emailInput = document.getElementById("emailInput");
+  const passwordInput = document.getElementById("passwordInput");
+  const emailLoginBtn = document.getElementById("emailLoginBtn");
+  const emailSignUpBtn = document.getElementById("emailSignUpBtn");
+  const resetPasswordBtn = document.getElementById("resetPasswordBtn");
+  const googleLoginBtn = document.getElementById("googleLogin");
+  const authMessage = document.getElementById("authMessage");
+
+  function showMessage(msg, type="error"){
+    authMessage.textContent = msg;
+    authMessage.style.color = type==="error" ? "#ff6b6b" : "#00e6b8";
+  }
+
+  emailInput.addEventListener("input", () => authMessage.textContent="");
+  passwordInput.addEventListener("input", () => authMessage.textContent="");
+
+  emailLoginBtn.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    if(!email || !password){ showMessage("Enter both email & password"); return; }
+    try {
+      await signInWithEmailAndPassword(auth,email,password);
+      showMessage("Login successful!", "success");
+      authModal.style.display="none";
+    } catch(e){ showMessage("Login failed: "+e.message); console.error(e); }
+  });
+
+  emailSignUpBtn.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    if(!email || !password){ showMessage("Enter both email & password"); return; }
+    try {
+      await createUserWithEmailAndPassword(auth,email,password);
+      showMessage("Signup successful!", "success");
+      authModal.style.display="none";
+    } catch(e){ showMessage("Signup failed: "+e.message); console.error(e); }
+  });
+
+  resetPasswordBtn.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    if(!email){ showMessage("Enter your email first"); return; }
+    try {
+      await sendPasswordResetEmail(auth,email);
+      showMessage("Password reset email sent!", "success");
+    } catch(e){ showMessage("Error: "+e.message); console.error(e); }
+  });
+
+  googleLoginBtn.addEventListener("click", async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth,provider);
+      showMessage("Google login successful!", "success");
+      authModal.style.display="none";
+    } catch(e){ showMessage("Google login failed: "+e.message); console.error(e); }
+  });
+
+  window.addEventListener("click",(e)=>{if(e.target===authModal) authModal.style.display="none";});
+
+  // Footer year
+  document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
